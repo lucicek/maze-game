@@ -59,6 +59,14 @@ class Result{
 
       const isWallTile = map[y][x] === 1;
 
+      const wallsAround =
+        (map[y-1]?.[x] === 1) +
+        (map[y+1]?.[x] === 1) +
+        (map[y]?.[x-1] === 1) +
+        (map[y]?.[x+1] === 1);
+
+      const tooTight = wallsAround >= 2; 
+
       const hitsOtherResult = results.some(r =>
         r !== this &&
         px < r.x + r.size &&
@@ -67,7 +75,7 @@ class Result{
         py + this.size > r.y
       );
 
-      valid = !isWallTile && !hitsOtherResult;
+      valid = !isWallTile && !hitsOtherResult && !tooTight;
     }
 
     this.x = x * tileSize;
